@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const LinkButton = styled(Link)`
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
     display: inline-block;
     border-radius: 3px;
-    padding: 10px 15px;;
-    margin: 0 10px;
+    padding: 10px 15px;
+    margin: 0 12px;
     min-width: 80px;
     text-align: center;
     min-height: 20px;
@@ -14,15 +16,15 @@ export const LinkButton = styled(Link)`
     color: #000;
     border: 1px solid #dbdbdbdb;
     outline: 0;
-    box-shadow: 0 0 5px #ccc;
 
     &:hover {
         border-color: #c5c5c5
     }
 
-    ${props => props.yellow && `
+    ${props => props.active && `
         background: #F4E04D;
         border: 1px solid #F4E04D;
+        box-shadow: 0 0 5px #ccc;
 
         &:hover {
             border: 1px solid #dbc945;
@@ -32,7 +34,6 @@ export const LinkButton = styled(Link)`
     ${props => props.title && `
         box-shadow: none;
         text-decoration: none;
-        font-family: 'Lato', sans-serif;
         font-size: 15px;
         font-weight: 600;
         color: #4A4A4A;

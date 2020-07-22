@@ -66,6 +66,7 @@ export const Ul = styled.ul`
     list-style: none;
     display: flex;
     flex-flow: row nowrap;
+    margin-top: 10px;
 
     a {
         text-decoration: none;
