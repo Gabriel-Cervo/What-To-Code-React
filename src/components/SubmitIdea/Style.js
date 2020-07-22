@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Body = styled.form`
+export const Form = styled.form`
     width: 45%;
     margin: 0 auto;
     padding-top: 100px;
@@ -31,7 +31,6 @@ export const Divider = styled.hr`
 `;
 
 export const SubmitButton = styled.button`
-    font-family: 'Lato', sans-serif;
     font-weight: 300;
     display: inline-block;
     background: #F4E04D;
@@ -51,5 +50,21 @@ export const SubmitButton = styled.button`
 
     &:hover {
         border: 1px solid #dbc945;
+    }
+
+    @media (max-width: 768px) {
+        margin: 25px;
+    }
+`;
+
+export const TagsWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20px;
+
+    @media (max-width: 768px) {
+        width: 95%;
     }
 `;

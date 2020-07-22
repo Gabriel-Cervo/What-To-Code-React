@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const LinkButton = styled(Link)`
-    font-family: 'Lato', sans-serif;
     font-weight: 300;
     display: inline-block;
     border-radius: 3px;

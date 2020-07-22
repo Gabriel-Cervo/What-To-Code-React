@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Label = styled.label`
     display: block;
     margin-bottom: 8px;
-    font-family: 'Lato', sans-serif;
     font-size: 16px;
     color: #161616;
 `;
