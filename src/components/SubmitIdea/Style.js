@@ -21,6 +21,11 @@ export const Title = styled.h1`
     letter-spacing: 1px;
 `;
 
+export const Error = styled(Title)`
+    font-size: 16px;
+    color: red;
+`;
+
 export const Divider = styled.hr`
     margin: 25px 0;
     opacity: 0.2;

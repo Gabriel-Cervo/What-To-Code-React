@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Form, Title, Divider, SubmitButton, TagsWrapper } from './Style';
+import { Form, Title, Error, Divider, SubmitButton, TagsWrapper } from './Style';
 import InputText from '../Inputs/InputText/InputText';
 import TextArea from '../Inputs/TextArea/TextArea';
 import Tag from '../Tag/Tag.jsx';
@@ -47,15 +47,16 @@ export default function SubmitIdea() {
         const data = {
             title: inputValue.inputText,
             description: inputValue.textArea,
-            tags: inputValue.tags
+            tags: tags
         }
         
         await submitIdea(data)
         .then(res => {
-            setStatus(prev => ({...prev, loading: false, success: true}));
+            console.log(res.statusCode);
+            setStatus({error: false, loading: false, success: true});
         })
         .catch(error => {
-            setStatus(prev => ({...prev, loading: false, error: true}));
+            setStatus({success: false, loading: false, error: true});
         })
 
     }
@@ -67,6 +68,9 @@ export default function SubmitIdea() {
         }
             <Form onSubmit={handleSubmit}>
                 <Title>Tell the world What To Code!</Title>
+                { status.error &&
+                    <Error>Something went wrong... Check your connection and try again.</Error>
+                }
                 <Divider />
                 <InputText 
                     labelText="Title (max. 100)"

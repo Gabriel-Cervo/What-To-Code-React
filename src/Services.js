@@ -6,6 +6,10 @@ export async function submitIdea(data) {
             title: data.title,
             description: data.description,
             tags: data.tags
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
         return response;
     } catch (error) {
