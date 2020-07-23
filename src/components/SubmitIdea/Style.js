@@ -47,9 +47,15 @@ export const SubmitButton = styled.button`
     outline: 0;
     float: right;
     margin: 25px 0 0 25px;
+    cursor: pointer;
 
     &:hover {
         border: 1px solid #dbc945;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: default;
     }
 
     @media (max-width: 768px) {

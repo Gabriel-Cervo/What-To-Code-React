@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar/Navbar';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-router-dom';
 import SubmitIdea from './SubmitIdea/SubmitIdea.jsx';
 
 export default function App() {
@@ -8,15 +8,26 @@ export default function App() {
         <Router>
             <Navbar />
             <Switch>
-                <Route exact path="/" component={A} />
-                <Route path="/random" component={B} />
-                <Route path="/submit" component={SubmitIdea} />
-            </Switch>
+                <Route exact path="/"> 
+                    <A />
+                </Route>
+                <Route path="/Random"> 
+                    <B/>
+                </Route>                
+                <Route path="/submit"> 
+                    <SubmitIdea />
+                </Route>            
+                </Switch>
         </Router>
     )
 }
 
+
+// Teste
 function A() {
+    let location = useLocation();
+    let params = new URLSearchParams(location.search)
+    console.log(params.get('order'));
     return(<h1>Main</h1>)
 }
 

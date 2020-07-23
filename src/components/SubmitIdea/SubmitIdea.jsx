@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Form, Title, Divider, SubmitButton, TagsWrapper } from './Style';
 import InputText from '../Inputs/InputText/InputText';
 import TextArea from '../Inputs/TextArea/TextArea';
 import Tag from '../Tag/Tag.jsx';
+import { submitIdea } from '../../Services.js';
 
 
 export default function SubmitIdea() {
     const [inputValue, setInputValue] = useState({inputText: '', textArea: '', tag: ''});
-    const [tags, setTags] = useState([])
+    const [tags, setTags] = useState([]);
+    const [status, setStatus] = useState({loading: false, error: false, success: false});
 
     function handleChange(event) {
         const name = event.target.name;
@@ -37,48 +40,73 @@ export default function SubmitIdea() {
         setTags(prev => (prev.filter((item, index) => index !== id)));
     }
 
+    async function handleSubmit(event) {
+        event.preventDefault();
+        setStatus(prev => ({...prev, loading: true}));
+        
+        const data = {
+            title: inputValue.inputText,
+            description: inputValue.textArea,
+            tags: inputValue.tags
+        }
+        
+        await submitIdea(data)
+        .then(res => {
+            setStatus(prev => ({...prev, loading: false, success: true}));
+        })
+        .catch(error => {
+            setStatus(prev => ({...prev, loading: false, error: true}));
+        })
+
+    }
+
     return (
-        <Form>
-            <Title>Tell the world What To Code!</Title>
-            <Divider />
-            <InputText 
-                labelText="Title (max. 100)"
-                placeHolder="A small step for a human but a big step for mankind"
-                maxLength="100"
-                name="inputText"
-                value={inputValue.inputText}
-                onChange={handleChange}
-            />
-            <TextArea 
-                labelText="Description (max. 1000, optional)"
-                placeHolder="..."
-                maxLength="1000"
-                name="textArea"
-                value={inputValue.textArea}
-                onChange={handleChange}
-            />
-            <InputText 
-                labelText="Tags (max. 6, optional)"
-                placeHolder=""
-                maxLength=""
-                name="tag"
-                value={inputValue.tag}
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}
-            />
-            {tags.length > 0 &&
-                <TagsWrapper>
-                    {tags.map((tag, index) => (
-                        <Tag 
-                            id={index}
-                            key={index} 
-                            text={tag}
-                            onDelete={handleDelete}
-                        />
-                    ))}
-                </TagsWrapper>
-            }
-            <SubmitButton type="submit">Submit</SubmitButton>
-        </Form>
+        <>
+        { status.success && 
+            <Redirect from="/submit" to="/?order=RECENT" />
+        }
+            <Form onSubmit={handleSubmit}>
+                <Title>Tell the world What To Code!</Title>
+                <Divider />
+                <InputText 
+                    labelText="Title (max. 100)"
+                    placeHolder="A small step for a human but a big step for mankind"
+                    maxLength="100"
+                    name="inputText"
+                    value={inputValue.inputText}
+                    onChange={handleChange}
+                />
+                <TextArea 
+                    labelText="Description (max. 1000, optional)"
+                    placeHolder="..."
+                    maxLength="1000"
+                    name="textArea"
+                    value={inputValue.textArea}
+                    onChange={handleChange}
+                />
+                <InputText 
+                    labelText="Tags (max. 6, optional)"
+                    placeHolder=""
+                    maxLength=""
+                    name="tag"
+                    value={inputValue.tag}
+                    onChange={handleChange}
+                    onKeyPress={handleKeyPress}
+                />
+                {tags.length > 0 &&
+                    <TagsWrapper>
+                        {tags.map((tag, index) => (
+                            <Tag 
+                                id={index}
+                                key={index} 
+                                text={tag}
+                                onDelete={handleDelete}
+                            />
+                        ))}
+                    </TagsWrapper>
+                }
+                {status.loading ? <SubmitButton disabled>Loading</SubmitButton> : <SubmitButton type="submit">Submit</SubmitButton>}  
+            </Form>
+        </>
     )
 }
