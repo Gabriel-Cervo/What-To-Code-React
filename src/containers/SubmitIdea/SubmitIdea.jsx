@@ -107,7 +107,7 @@ export default function SubmitIdea() {
                         ))}
                     </TagsWrapper>
                 }
-                {status.loading ? <SubmitButton disabled>Loading...</SubmitButton> : <SubmitButton type="submit">Submit</SubmitButton>}  
+                {status.loading ? <SubmitButton disabled>Submiting...</SubmitButton> : <SubmitButton type="submit">Submit</SubmitButton>}  
             </Form>
         </>
     )

@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container, LeftWrap, RightWrap } from './Style';
+import { Container, LeftWrap, RightWrap, ButtonGroup, RightSpacing } from './Style';
 import { Divider } from '../SubmitIdea/Style';
 import List from '../../components/List/List.jsx';
+import { LinkButton } from '../../components/LinkButton/Button';
+import Post from '../../components/Post/Post.jsx';
 
 export default function Main() {
 
+    const [activeItem, setActiveItem] = useState('Popular');
+    
     // let location = useLocation();
     // let params = new URLSearchParams(location.search)
     // console.log(params.get('order'));
@@ -13,6 +17,7 @@ export default function Main() {
     // Testes
     const links1 = ['game', 'gui', 'management', 'reddit', 'writing', 'graphics'];
     const aboutLinks = ['About', 'Privacy Policy', 'Contact'];
+    const topButtons = ['Popular', 'Rising', 'Recent', 'Oldest']
 
     return (
         <Container>
@@ -29,8 +34,17 @@ export default function Main() {
             />
         </LeftWrap>
         <RightWrap>
-            <h1>Conteudo</h1>
+            <ButtonGroup>
+                {topButtons.map(item => {
+                    const linkTo = `?order=${item.toUpperCase()}`;
+                    return (<LinkButton to={linkTo} active={activeItem === item ? true : false} onClick={() => setActiveItem(item)}>{item}</LinkButton>)
+                })}
+            </ButtonGroup>
+
+            <Post />
         </RightWrap>
+
+        <RightSpacing />
         </Container>
     )
 }
