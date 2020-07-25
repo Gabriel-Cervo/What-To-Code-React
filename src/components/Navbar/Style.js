@@ -29,7 +29,7 @@ export const Nav = styled.nav`
 export const StyledBurger = styled.div`
     width: 25px;
     height: 25px;
-    position: fixed;
+    position: absolute;
     top: 15px;
     right: 20px;
     z-index: 20;
