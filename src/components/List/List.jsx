@@ -10,8 +10,8 @@ export default function List(props) {
             <ItemGroup>
                 {props.itens.map((item, index) => {
                     const itemLink = props.tags ? `?tag=${item}` : `/${item.toLowerCase()}`;
-
-                    return (<li key={index}><LinkButton to={itemLink}>#{item}</LinkButton></li>)
+                    const itemName = props.tags ? `#${item}` : `${item}`;
+                    return (<li key={index}><LinkButton to={itemLink}>{itemName}</LinkButton></li>)
                 })}
             </ItemGroup>
         </>
