@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Form, Title, Error, Divider, SubmitButton, TagsWrapper } from './Style';
-import InputText from '../Inputs/InputText/InputText';
-import TextArea from '../Inputs/TextArea/TextArea';
-import Tag from '../Tag/Tag.jsx';
+import InputText from '../../components/Inputs/InputText/InputText';
+import TextArea from '../../components/Inputs/TextArea/TextArea';
+import Tag from '../../components/Tag/Tag.jsx';
 import { submitIdea } from '../../Services.js';
 
 
 export default function SubmitIdea() {
-    const [inputValue, setInputValue] = useState({inputText: '', textArea: '', tag: ''});
+    const [inputValue, setInputValue] = useState({ inputText: '', textArea: '', tag: '' });
     const [tags, setTags] = useState([]);
-    const [status, setStatus] = useState({loading: false, error: false, success: false});
+    const [status, setStatus] = useState({ loading: false, error: false, success: false });
 
     function handleChange(event) {
         const name = event.target.name;
@@ -52,23 +52,21 @@ export default function SubmitIdea() {
         
         await submitIdea(data)
         .then(res => {
-            console.log(res.statusCode);
             setStatus({error: false, loading: false, success: true});
         })
         .catch(error => {
             setStatus({success: false, loading: false, error: true});
         })
-
     }
 
     return (
         <>
-        { status.success && 
+        {status.success && 
             <Redirect from="/submit" to="/?order=RECENT" />
         }
             <Form onSubmit={handleSubmit}>
                 <Title>Tell the world What To Code!</Title>
-                { status.error &&
+                {status.error &&
                     <Error>Something went wrong... Check your connection and try again.</Error>
                 }
                 <Divider />
@@ -109,7 +107,7 @@ export default function SubmitIdea() {
                         ))}
                     </TagsWrapper>
                 }
-                {status.loading ? <SubmitButton disabled>Loading</SubmitButton> : <SubmitButton type="submit">Submit</SubmitButton>}  
+                {status.loading ? <SubmitButton disabled>Loading...</SubmitButton> : <SubmitButton type="submit">Submit</SubmitButton>}  
             </Form>
         </>
     )

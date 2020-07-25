@@ -1,7 +1,8 @@
 import React from 'react';
 import Navbar from './Navbar/Navbar';
-import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-router-dom';
-import SubmitIdea from './SubmitIdea/SubmitIdea.jsx';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import SubmitIdea from '../containers/SubmitIdea/SubmitIdea.jsx';
+import Main from '../containers/MainPage/Main.jsx';
 
 export default function App() {
     return(
@@ -9,7 +10,7 @@ export default function App() {
             <Navbar />
             <Switch>
                 <Route exact path="/"> 
-                    <A />
+                    <Main />
                 </Route>
                 <Route path="/Random"> 
                     <B/>
@@ -24,12 +25,6 @@ export default function App() {
 
 
 // Teste
-function A() {
-    let location = useLocation();
-    let params = new URLSearchParams(location.search)
-    console.log(params.get('order'));
-    return(<h1>Main</h1>)
-}
 
 function B() {
     return(<h1>Random</h1>)
