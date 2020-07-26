@@ -13,7 +13,7 @@ export default function Post(post) {
                         <LinkButton to="?tag=socket">#socket</LinkButton>
                     </Tags>
                 </div>
-                <BottomButton active><span>938 ❤️</span></BottomButton>
+                <BottomButton to="?" active="true"><span>938</span> <span role="img" aria-label="hearth emoji">❤️</span></BottomButton>
             </PostWrap>
     )
 }

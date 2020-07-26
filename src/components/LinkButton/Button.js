@@ -20,7 +20,7 @@ export const LinkButton = styled(Link)`
         border-color: #c5c5c5
     }
 
-    ${props => props.active && `
+    ${props => props.active === "true" && `
         background: #F4E04D;
         border: 1px solid #F4E04D;
         box-shadow: 0 0 5px #ccc;

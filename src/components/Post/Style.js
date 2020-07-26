@@ -58,7 +58,7 @@ export const BottomButton = styled(LinkButton)`
     margin: auto;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
-
+    
     span {
         color: #8db1ab;
     }
