@@ -9,26 +9,48 @@ import { getIdeas } from '../../Services.js';
 
 
 export default function Main(props) {
-    const [activeItem, setActiveItem] = useState('Popular');
+    const [activeItem, setActiveItem] = useState('POPULAR');
     const [ideas, setIdeas] = useState([]);
-    
-    const query = new URLSearchParams(useLocation().search);
 
-    useEffect(() => {
-        const params = query.get('order') || 'POPULAR';  
-        
+    useEffect(() => { 
         async function callAPI(params) {
-            await getIdeas(params)
-            .then(response => setIdeas(response.data));
+            await getIdeas()
+            .then(response => {
+                setIdeas(response.data);
+            });
         }
 
-        console.log('refresh');
-
-        callAPI(params);
+        callAPI();
 
         return () => setIdeas(0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+
+    function sortIdeas() {
+        const params = query.get('order') || 'POPULAR'; 
+        if (activeItem !== params) {
+            setActiveItem(params);
+        }
+
+        let orderedIdeas = [];
+
+        if (params === 'POPULAR') {
+            orderedIdeas = ideas.slice().sort((a, b) => b['likes'] - a['likes']);
+        } else if (params === 'RECENT') {
+            orderedIdeas = ideas.slice().sort((a, b) => b['postedAt'] - a['postedAt']);
+        } else if (params === 'OLDEST') {
+            orderedIdeas = ideas.slice().sort((a, b) => a['postedAt'] - b['postedAt']);
+        } else {
+            orderedIdeas = ideas.slice().sort((a, b) => a['likes'] - b['postedAt']);
+        }
+        return orderedIdeas;
+
+
+    }
+
+    const query = new URLSearchParams(useLocation().search);
+    const orderedIdeas = sortIdeas();
 
     // Testes
     const links1 = ['game', 'gui', 'management', 'reddit', 'writing', 'graphics'];
@@ -52,11 +74,11 @@ export default function Main(props) {
             <ButtonGroup>
                 {topButtons.map((item, index) => {
                     const linkTo = `?order=${item.toUpperCase()}`;
-                    return (<LinkButton key={index} to={linkTo} active={activeItem === item ? "true" : "false"} onClick={() => setActiveItem(item)}>{item}</LinkButton>)
+                    return (<LinkButton key={index} to={linkTo} active={activeItem === item.toUpperCase() ? "true" : "false"} onClick={() => setActiveItem(item)}>{item}</LinkButton>)
                 })}
             </ButtonGroup>
 
-            {ideas === [] ? 'Loading...' : ideas.map((item, index) => 
+            {ideas === [] ? 'Loading...' : orderedIdeas.map((item, index) => 
             <Post 
                 key={item.id || index}
                 title={item.title}
