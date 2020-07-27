@@ -5,15 +5,16 @@ import { Divider } from '../SubmitIdea/Style';
 import List from '../../components/List/List.jsx';
 import { LinkButton } from '../../components/LinkButton/Button';
 import Post from '../../components/Post/Post.jsx';
-import { getIdeas } from '../../Services.js';
+import { getIdeas, updateLike } from '../../Services.js';
 
 
-export default function Main(props) {
+export default function Main() {
     const [activeItem, setActiveItem] = useState('POPULAR');
     const [ideas, setIdeas] = useState([]);
+    const [likedList, setLikedList] = useState([]);
 
     useEffect(() => { 
-        async function callAPI(params) {
+        async function callAPI() {
             await getIdeas()
             .then(response => {
                 setIdeas(response.data);
@@ -22,10 +23,14 @@ export default function Main(props) {
 
         callAPI();
 
-        return () => setIdeas(0);
+        return () => setIdeas([]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    async function callUpdate(id, value) {
+        await updateLike(id, value)
+        .then(response => console.log(response));
+    }
 
     function sortIdeas() {
         const params = query.get('order') || 'POPULAR'; 
@@ -35,18 +40,46 @@ export default function Main(props) {
 
         let orderedIdeas = [];
 
-        if (params === 'POPULAR') {
-            orderedIdeas = ideas.slice().sort((a, b) => b['likes'] - a['likes']);
-        } else if (params === 'RECENT') {
-            orderedIdeas = ideas.slice().sort((a, b) => b['postedAt'] - a['postedAt']);
-        } else if (params === 'OLDEST') {
-            orderedIdeas = ideas.slice().sort((a, b) => a['postedAt'] - b['postedAt']);
-        } else {
-            orderedIdeas = ideas.slice().sort((a, b) => a['likes'] - b['postedAt']);
+        switch (params) {
+            case "POPULAR":
+                orderedIdeas = ideas.slice().sort((a, b) => b['likes'] - a['likes']);
+                break;   
+            case "OLDEST":
+                orderedIdeas = ideas.slice().sort((a, b) => a['postedAt'] - b['postedAt']);
+                break;
+            // Popular...
+            default:
+                orderedIdeas = ideas.slice().sort((a, b) => b['postedAt'] - a['postedAt']);
+                break;
+                
         }
+
+        const tag = query.get('tag');
+        if (tag) {
+            orderedIdeas = orderedIdeas.filter(item => item.tags.includes(tag));
+        }
+
         return orderedIdeas;
+    }
 
+    function handleClick(id) {
+        if (!likedList.includes(id)){
+            setLikedList(prev => ([...prev, id]));
+            const attList = [...ideas];
+            attList[attList.indexOf(attList.find(element => element._id === id))]['likes'] += 1;
+            setIdeas(attList);
 
+            callUpdate(id, +1);
+
+        } else {
+            setLikedList(prev => prev.filter(item => item !== id));
+            const attList = [...ideas];
+            attList[attList.indexOf(attList.find(element => element._id === id))]['likes'] -= 1;
+            setIdeas(attList);
+
+            callUpdate(id, -1);
+
+        }
     }
 
     const query = new URLSearchParams(useLocation().search);
@@ -78,14 +111,20 @@ export default function Main(props) {
                 })}
             </ButtonGroup>
 
-            {ideas === [] ? 'Loading...' : orderedIdeas.map((item, index) => 
-            <Post 
-                key={item.id || index}
-                title={item.title}
-                text={item.description}
-                tags={item.tags}
-                likes={item.likes}
-            />)}
+            {ideas === [] ? 'Loading...' : orderedIdeas.map((item, index) => {
+            return (
+                <Post 
+                    key={item._id || index}
+                    id={item._id || index}
+                    index={index}
+                    title={item.title}
+                    text={item.description}
+                    tags={item.tags}
+                    likes={item.likes}
+                    onLike={handleClick}
+                />)
+                })
+            }
         </RightWrap>
 
         <RightSpacing />

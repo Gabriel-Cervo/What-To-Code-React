@@ -3,7 +3,6 @@ import { PostWrap, Title, Text, Tags, BottomButton } from './Style';
 import { LinkButton } from '../LinkButton/Button';
 export default function Post(props) {
     return (
-
             <PostWrap>
                 <div className="postItens" style={{padding: '24px'}}>
                     <Title>{props.title}</Title>
@@ -15,7 +14,7 @@ export default function Post(props) {
                             })}
                     </Tags>
                 </div>
-                <BottomButton to="?" active="true"><span>{props.likes}</span> <span role="img" aria-label="hearth emoji">❤️</span></BottomButton>
+                <BottomButton active="true" onClick={() => {props.onLike(props.id)}}><span>{props.likes}</span> <span role="img" aria-label="hearth emoji">❤️</span></BottomButton>
             </PostWrap>
     )
 }

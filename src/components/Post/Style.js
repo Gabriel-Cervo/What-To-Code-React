@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { LinkButton } from '../LinkButton/Button';
 
 export const PostWrap = styled.div`
     display: block;
@@ -50,7 +49,7 @@ export const Tags = styled.div`
     }
 `;
 
-export const BottomButton = styled(LinkButton)`
+export const BottomButton = styled.button`
     display: block;
     position: relative;
     top: 0;
@@ -58,6 +57,21 @@ export const BottomButton = styled(LinkButton)`
     margin: auto;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
+    background: #F4E04D;
+    border: 1px solid #F4E04D;
+    box-shadow: 0 0 5px #ccc;
+    font-weight: 300;
+    border-radius: 3px;
+    padding: 10px 15px;
+    min-width: 100%;
+    text-align: center;
+    min-height: 20px;
+    font-size: 16px;
+    outline: 0;
+
+    &:hover {
+        border: 1px solid #dbc945;
+    }
     
     span {
         color: #8db1ab;

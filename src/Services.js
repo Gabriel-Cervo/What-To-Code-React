@@ -27,5 +27,18 @@ export async function getIdeas(searchParams) {
     })
     .catch(error => {
         return Promise.reject(error);
-    })
+    });
+}
+
+export async function updateLike(id, value) {
+    return await axios.put(process.env.REACT_APP_SERVER_URL, {
+        ideaID: id,
+        increment: value
+  })
+  .then(response => {
+    return response;
+  })
+  .catch(error => {
+    return Promise.reject(error);
+  });
 }
