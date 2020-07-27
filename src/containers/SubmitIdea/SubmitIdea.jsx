@@ -62,7 +62,7 @@ export default function SubmitIdea() {
     return (
         <>
         {status.success && 
-            <Redirect from="/submit" to="/?order=RECENT" />
+            <Redirect from="/submit" to="/" />
         }
             <Form onSubmit={handleSubmit}>
                 <Title>Tell the world What To Code!</Title>

@@ -8,28 +8,32 @@ import Post from '../../components/Post/Post.jsx';
 import { getIdeas } from '../../Services.js';
 
 
-export default function Main() {
-    let [activeItem, setActiveItem] = useState('Popular');
-    let query = new URLSearchParams(useLocation().search);
-
-    // console.log();
-
-    async function callAPI(params) {
-        await getIdeas(params)
-        .then(response => console.log(response.data))
-       
-    }
+export default function Main(props) {
+    const [activeItem, setActiveItem] = useState('Popular');
+    const [ideas, setIdeas] = useState([]);
+    
+    const query = new URLSearchParams(useLocation().search);
 
     useEffect(() => {
         const params = query.get('order') || 'POPULAR';  
+        
+        async function callAPI(params) {
+            await getIdeas(params)
+            .then(response => setIdeas(response.data));
+        }
+
+        console.log('refresh');
+
         callAPI(params);
-    });
+
+        return () => setIdeas(0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Testes
     const links1 = ['game', 'gui', 'management', 'reddit', 'writing', 'graphics'];
     const aboutLinks = ['About', 'Privacy Policy', 'Contact'];
     const topButtons = ['Popular', 'Rising', 'Recent', 'Oldest']
-
     return (
         <Container>
         <LeftWrap>
@@ -48,11 +52,18 @@ export default function Main() {
             <ButtonGroup>
                 {topButtons.map((item, index) => {
                     const linkTo = `?order=${item.toUpperCase()}`;
-                    return (<LinkButton to={linkTo} key={index} active={activeItem === item ? "true" : "false"} onClick={() => setActiveItem(item)}>{item}</LinkButton>)
+                    return (<LinkButton key={index} to={linkTo} active={activeItem === item ? "true" : "false"} onClick={() => setActiveItem(item)}>{item}</LinkButton>)
                 })}
             </ButtonGroup>
 
-            <Post />
+            {ideas === [] ? 'Loading...' : ideas.map((item, index) => 
+            <Post 
+                key={item.id || index}
+                title={item.title}
+                text={item.description}
+                tags={item.tags}
+                likes={item.likes}
+            />)}
         </RightWrap>
 
         <RightSpacing />

@@ -1,19 +1,21 @@
 import React from 'react';
 import { PostWrap, Title, Text, Tags, BottomButton } from './Style';
 import { LinkButton } from '../LinkButton/Button';
-export default function Post(post) {
+export default function Post(props) {
     return (
 
             <PostWrap>
                 <div className="postItens" style={{padding: '24px'}}>
-                    <Title>A simple HTTP Server</Title>
-                    <Text>During our web development journey, all of us would have used a web server in one way or the other (MAMP, Apache, Node Server etc). But you would get a better understand of how the server works if you implement one on your own. Learn socket programming and try to give it a shot and see if you can serve web pages</Text>
+                    <Title>{props.title}</Title>
+                    <Text>{props.text}</Text>
                     <Tags>
-                        <LinkButton to="?tag=server">#server</LinkButton>
-                        <LinkButton to="?tag=socket">#socket</LinkButton>
+                        {props.tags.map((item, index) => {
+                            const link = `?tag=${item}`
+                            return (<LinkButton key={index} to={link}>#{item}</LinkButton>)
+                            })}
                     </Tags>
                 </div>
-                <BottomButton to="?" active="true"><span>938</span> <span role="img" aria-label="hearth emoji">❤️</span></BottomButton>
+                <BottomButton to="?" active="true"><span>{props.likes}</span> <span role="img" aria-label="hearth emoji">❤️</span></BottomButton>
             </PostWrap>
     )
 }
